@@ -2,89 +2,81 @@ package com.example.Module2.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.Module2.dto.EmployeeDTO;
 import com.example.Module2.model.Employee;
-import com.example.Module2.repo.EmployeeRepository;
+import com.example.Module2.service.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
     // Constructor Injection
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     // ================== GET ==================
 
     // GET /employee/1
     @GetMapping("/{employeeId}")
-    public Employee getEmployeeById(@PathVariable Long employeeId) {
-        return employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public EmployeeDTO getEmployeeById(@PathVariable Long employeeId) {
+        return employeeService.getEmployeeById(employeeId);
+               
     }
 
     // GET /employee
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
     // ================== POST ==================
 
     // POST /employee
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employee) {
+        return employeeService.createEmployee(employee);
     }
 
     // ================== PUT ==================
 
     // PUT /employee/1
-    @PutMapping("/{employeeId}")
-    public Employee updateEmployee(
-            @PathVariable Long employeeId,
-            @RequestBody Employee updatedEmployee) {
+    @PutMapping("/employee/{employeeId}")
+    public ResponseEntity<Employee> updateEmployee(
+            @PathVariable Long employeeId, @RequestBody Employee updatedEmployee) {
 
-        return employeeRepository.findById(employeeId)
-                .map(existingEmployee -> {
+        Employee employee=employeeService.updateEmployee(employeeId, updatedEmployee);
 
-                    existingEmployee.setName(updatedEmployee.getName());
-                    existingEmployee.setEmail(updatedEmployee.getEmail());
-                    existingEmployee.setAge(updatedEmployee.getAge());
-                    existingEmployee.setDateOfJoining(updatedEmployee.getDateOfJoining());
-                    existingEmployee.setIsActive(updatedEmployee.getIsActive());
-
-                    return employeeRepository.save(existingEmployee);
-                })
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return ResponseEntity.ok(employee);
     }
 
     // ================== PATCH ==================
 
-    // PATCH /employee/1?isActive=false
-    @PatchMapping("/{employeeId}")
-    public Employee updateEmployeeStatus(
-            @PathVariable Long employeeId,
-            @RequestParam Boolean isActive) {
-
-        return employeeRepository.findById(employeeId)
-                .map(employee -> {
-                    employee.setIsActive(isActive);
-                    return employeeRepository.save(employee);
-                })
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-    }
+   // PATCH /employee/1?isActive=false
+//    @PatchMapping("/{employeeId}")
+//    public Employee updateEmployeeStatus(
+//            @PathVariable Long employeeId,
+//            @RequestParam Boolean isActive) {
+//
+//        return employeeService.getEmployeeById(employeeId)
+//                .map(employee -> {
+//                    employee.setIsActive(isActive);
+//                    return employeeRepository.save(employee);
+//                })
+//                .orElseThrow(() -> new RuntimeException("Employee not found"));
+//    }
 
     // ================== DELETE ==================
 
     // DELETE /employee/1
     @DeleteMapping("/{employeeId}")
     public String deleteEmployee(@PathVariable Long employeeId) {
-        employeeRepository.deleteById(employeeId);
+        employeeService.deleteEmployee(employeeId);
         return "Employee with ID " + employeeId + " deleted successfully";
     }
 }
