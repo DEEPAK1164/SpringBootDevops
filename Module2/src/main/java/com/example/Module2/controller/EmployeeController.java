@@ -1,79 +1,90 @@
 package com.example.Module2.controller;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.example.Module2.dto.EmployeeDTO;
+import com.example.Module2.model.Employee;
+import com.example.Module2.repo.EmployeeRepository;
 
 @RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    // ✅ GET - PathVariable
-    @GetMapping("/employee/{employeeId}")
-    public EmployeeDTO getEmployeeById(@PathVariable Long employeeId) {
-        return new EmployeeDTO(
-                employeeId,
-                "Deepak Maurya",
-                "deepak@example.com",
-                24,
-                LocalDate.of(2023, 6, 1),
-                true
-        );
+    private final EmployeeRepository employeeRepository;
+
+    // Constructor Injection
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    // ✅ GET - RequestParam
-    @GetMapping("/employee")
-    public EmployeeDTO getEmployeeByIdUsingRequestParam(
-            @RequestParam Long employeeId) {
+    // ================== GET ==================
 
-        return new EmployeeDTO(
-                employeeId,
-                "Deepak Maurya",
-                "deepak@example.com",
-                24,
-                LocalDate.of(2023, 6, 1),
-                true
-        );
+    // GET /employee/1
+    @GetMapping("/{employeeId}")
+    public Employee getEmployeeById(@PathVariable Long employeeId) {
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
-    // ✅ POST - Create Employee
-    @PostMapping("/employee")
-    public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        // dummy create logic
-        employeeDTO.setId(101L);
-        return employeeDTO;
+    // GET /employee
+    @GetMapping("/employees")
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
-    // ✅ PUT - Full Update Employee
-    @PutMapping("/employee/{employeeId}")
-    public EmployeeDTO updateEmployee(
+    // ================== POST ==================
+
+    // POST /employee
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    // ================== PUT ==================
+
+    // PUT /employee/1
+    @PutMapping("/{employeeId}")
+    public Employee updateEmployee(
             @PathVariable Long employeeId,
-            @RequestBody EmployeeDTO employeeDTO) {
+            @RequestBody Employee updatedEmployee) {
 
-        employeeDTO.setId(employeeId);
-        return employeeDTO;
+        return employeeRepository.findById(employeeId)
+                .map(existingEmployee -> {
+
+                    existingEmployee.setName(updatedEmployee.getName());
+                    existingEmployee.setEmail(updatedEmployee.getEmail());
+                    existingEmployee.setAge(updatedEmployee.getAge());
+                    existingEmployee.setDateOfJoining(updatedEmployee.getDateOfJoining());
+                    existingEmployee.setIsActive(updatedEmployee.getIsActive());
+
+                    return employeeRepository.save(existingEmployee);
+                })
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
-    // ✅ PATCH - Partial Update
-    @PatchMapping("/employee/{employeeId}")
-    public EmployeeDTO updateEmployeeStatus(
+    // ================== PATCH ==================
+
+    // PATCH /employee/1?isActive=false
+    @PatchMapping("/{employeeId}")
+    public Employee updateEmployeeStatus(
             @PathVariable Long employeeId,
             @RequestParam Boolean isActive) {
 
-        return new EmployeeDTO(
-                employeeId,
-                "Deepak Maurya",
-                "deepak@example.com",
-                24,
-                LocalDate.of(2023, 6, 1),
-                isActive
-        );
+        return employeeRepository.findById(employeeId)
+                .map(employee -> {
+                    employee.setIsActive(isActive);
+                    return employeeRepository.save(employee);
+                })
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
-    // ✅ DELETE - Delete Employee
-    @DeleteMapping("/employee/{employeeId}")
+    // ================== DELETE ==================
+
+    // DELETE /employee/1
+    @DeleteMapping("/{employeeId}")
     public String deleteEmployee(@PathVariable Long employeeId) {
+        employeeRepository.deleteById(employeeId);
         return "Employee with ID " + employeeId + " deleted successfully";
     }
 }
