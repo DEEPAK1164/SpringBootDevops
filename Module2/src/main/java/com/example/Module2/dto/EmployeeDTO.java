@@ -2,9 +2,12 @@ package com.example.Module2.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotNull;
+
 public class EmployeeDTO {
 
     private Long id;
+    @NotNull(message="Please Enter the Name")
     private String name;
     private String email;
     private Integer age;

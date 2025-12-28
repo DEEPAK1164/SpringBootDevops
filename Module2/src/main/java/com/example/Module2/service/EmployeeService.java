@@ -1,9 +1,13 @@
 package com.example.Module2.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.Module2.dto.EmployeeDTO;
@@ -23,9 +27,17 @@ public class EmployeeService {
    
 
    public EmployeeDTO getEmployeeById(Long employeeId) {
-	   Employee emp=employeeRepository.findById(employeeId).orElse(null);
-       return modelMapper.map(emp, EmployeeDTO.class);
-   }
+
+	    Employee employee = employeeRepository.findById(employeeId)
+	            .orElse(null);
+
+	    if (employee == null) {
+	        return null; // 👈 important
+	    }
+
+	    return modelMapper.map(employee, EmployeeDTO.class);
+	}
+
 
    public List<EmployeeDTO> getAllEmployees() {
 
@@ -33,7 +45,7 @@ public class EmployeeService {
 
 	    List<EmployeeDTO> allEmployees = employees.stream()
 	            .map(employee -> modelMapper.map(employee, EmployeeDTO.class))
-	            .toList();
+	            .collect(Collectors.toList());
 
 	    return allEmployees;
 	}
@@ -51,31 +63,37 @@ public class EmployeeService {
 	    return modelMapper.map(savedEmployee, EmployeeDTO.class);
 	}
 
-   
-   public Employee updateEmployee(Long employeeId, Employee updatedEmployee) {
-
-       Employee existingEmployee = employeeRepository.findById(employeeId).orElse(null);
-               
-
-       // update fields
-       existingEmployee.setName(updatedEmployee.getName());
-       existingEmployee.setEmail(updatedEmployee.getEmail());
-       existingEmployee.setAge(updatedEmployee.getAge());
-       existingEmployee.setDateOfJoining(updatedEmployee.getDateOfJoining());
-       existingEmployee.setIsActive(updatedEmployee.getIsActive());
-
-       return employeeRepository.save(existingEmployee);
-   }
+   public EmployeeDTO updateEmployeeById(Long employeeId, EmployeeDTO employeeDTO) {
+	   //don't throw error if this employee does not exist in DB create employee with this EmployeeDTO and put in DB otherwise update the employee
+	   Employee employee=modelMapper.map(employeeDTO, Employee.class);
+	   employee.setId(employeeId);
+	   Employee savedEmployee=employeeRepository.save(employee);
+	return modelMapper.map(savedEmployee,EmployeeDTO.class);   
+	}
 
 
-
-   public void deleteEmployee(Long employeeId) {
+   public void deleteEmployeeById(Long employeeId) {
 
 	    Employee employee = employeeRepository.findById(employeeId)
 	            .orElseThrow(() -> new RuntimeException("Employee not found"));
 
 	    employeeRepository.delete(employee);
 	}
+
+
+   public EmployeeDTO updatePartialEmployeeById(Long employeeId, Map<String, Object> updates) {
+	// TODO Auto-generated method stub
+	   boolean exists=employeeRepository.existsById(employeeId);
+	   if(!exists) return null;
+	   Employee employee = employeeRepository.findById(employeeId).get();
+	     updates.forEach((field,value)->{
+	    	 Field fieldToBeUpdated=ReflectionUtils.findRequiredField(Employee.class, field);
+	    	 fieldToBeUpdated.setAccessible(true);
+	    	 ReflectionUtils.setField(fieldToBeUpdated, employee, value);
+	     });
+	     
+	     return modelMapper.map(employeeRepository.save(employee),EmployeeDTO.class);
+   }
 
 
 }
