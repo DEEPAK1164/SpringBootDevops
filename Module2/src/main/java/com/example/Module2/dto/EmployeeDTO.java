@@ -2,18 +2,33 @@ package com.example.Module2.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 public class EmployeeDTO {
 
-    private Long id;
-    @NotNull(message="Please Enter the Name")
-    private String name;
-    private String email;
-    private Integer age;
-    private LocalDate dateOfJoining;
-    private Boolean isActive;
+	private Long id;
 
+    @NotBlank(message = "Name must not be blank")
+    private String name;
+
+    @NotBlank(message = "Email must not be blank")
+    @Email(message = "Email should be valid")
+    private String email;
+
+    @NotNull(message = "Age is required")
+    @Min(value = 18, message = "Age must be at least 18")
+    private Integer age;
+
+    @NotNull(message = "Date of joining is required")
+    @PastOrPresent(message = "Date of joining cannot be in the future")
+    private LocalDate dateOfJoining;
+
+    @NotNull(message = "Active status must be specified")
+    private Boolean isActive;
     // No-args constructor
     public EmployeeDTO() {
     }

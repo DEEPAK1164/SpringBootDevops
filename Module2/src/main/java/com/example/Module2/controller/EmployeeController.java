@@ -1,10 +1,14 @@
 package com.example.Module2.controller;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.Module2.dto.EmployeeDTO;
+import com.example.Module2.exceptions.ResourceNotFoundException;
 import com.example.Module2.service.EmployeeService;
 
 import jakarta.validation.Valid;
@@ -25,11 +29,12 @@ public class EmployeeController {
     // GET /employee/1
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long employeeId) {
-        EmployeeDTO employeeDTO = employeeService.getEmployeeById(employeeId);
-        if (employeeDTO == null) {
-            return ResponseEntity.notFound().build(); // 404
-        }
-        return ResponseEntity.ok(employeeDTO); // 200
+    	Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeById(employeeId);
+
+    	return employeeDTO
+    	        .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
+    	        .orElseThrow(() -> new ResourceNotFoundException("Employee not found!"));
+
     }
 
 

@@ -26,16 +26,10 @@ public class EmployeeService {
    }
    
 
-   public EmployeeDTO getEmployeeById(Long employeeId) {
+   public Optional<EmployeeDTO> getEmployeeById(Long employeeId) {
 
-	    Employee employee = employeeRepository.findById(employeeId)
-	            .orElse(null);
-
-	    if (employee == null) {
-	        return null; // 👈 important
-	    }
-
-	    return modelMapper.map(employee, EmployeeDTO.class);
+	    return employeeRepository.findById(employeeId)
+	            .map(employee -> modelMapper.map(employee, EmployeeDTO.class));
 	}
 
 
