@@ -1,52 +1,48 @@
 package com.example.Modeule3.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@ToString
 @Getter
 @Setter
-@Table(name = "patients_table")
-public class Patient {
-   
+@AllArgsConstructor
+@NoArgsConstructor
+public class Department {
+  
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(nullable=false,unique=true,length=100)
 	private String name;
 	
-	private LocalDate birthDate;
 	
-	private String email;
+	@OneToOne
+	@JoinColumn(nullable=false)
+	private Doctor headDoctor;
 	
-	private String gender;
 	
-	@Enumerated(value=EnumType.STRING)
-	private BloodGroupType bloodGroup;
 	
-	@Column(updatable = false)
-	@CreationTimestamp
-	private LocalDateTime createdAt;
+	@ManyToMany
+	private Set<Doctor>doctors=new HashSet<>();
 	
-
-
+	
+	
+	
 	
 }

@@ -1,26 +1,3 @@
-INSERT INTO patients_table 
-(name, birth_date, email, gender, blood_group) 
-VALUES
-('Amit Sharma', '1995-03-12', 'amit.sharma@gmail.com', 'Male', 'A_POSITIVE'),
-('Priya Verma', '1998-07-21', 'priya.verma@gmail.com', 'Female', 'B_POSITIVE'),
-('Rahul Singh', '1992-11-05', 'rahul.singh@gmail.com', 'Male', 'O_POSITIVE'),
-('Neha Gupta', '1996-01-18', 'neha.gupta@gmail.com', 'Female', 'AB_POSITIVE'),
-('Vikas Mehta', '1990-09-30', 'vikas.mehta@gmail.com', 'Male', 'A_NEGATIVE'),
-('Anjali Patel', '1999-06-14', 'anjali.patel@gmail.com', 'Female', 'B_NEGATIVE'),
-('Rohit Kumar', '1994-04-25', 'rohit.kumar@gmail.com', 'Male', 'O_NEGATIVE'),
-('Sneha Iyer', '1997-12-02', 'sneha.iyer@gmail.com', 'Female', 'AB_NEGATIVE'),
-('Kunal Jain', '1991-08-09', 'kunal.jain@gmail.com', 'Male', 'A_POSITIVE'),
-('Pooja Mishra', '1995-10-17', 'pooja.mishra@gmail.com', 'Female', 'B_POSITIVE'),
-('Arjun Reddy', '1993-02-11', 'arjun.reddy@gmail.com', 'Male', 'O_POSITIVE'),
-('Kavya Nair', '1998-05-28', 'kavya.nair@gmail.com', 'Female', 'AB_POSITIVE'),
-('Suresh Rao', '1989-07-07', 'suresh.rao@gmail.com', 'Male', 'A_NEGATIVE'),
-('Ritu Saxena', '1996-03-03', 'ritu.saxena@gmail.com', 'Female', 'B_NEGATIVE'),
-('Manish Pandey', '1992-01-22', 'manish.pandey@gmail.com', 'Male', 'O_NEGATIVE'),
-('Divya Choudhary', '1999-09-15', 'divya.choudhary@gmail.com', 'Female', 'AB_NEGATIVE'),
-('Nikhil Bansal', '1994-06-01', 'nikhil.bansal@gmail.com', 'Male', 'A_POSITIVE'),
-('Swati Kulkarni', '1997-11-19', 'swati.kulkarni@gmail.com', 'Female', 'B_POSITIVE'),
-('Aakash Yadav', '1991-12-27', 'aakash.yadav@gmail.com', 'Male', 'O_POSITIVE'),
-('Meenal Joshi', '1998-02-08', 'meenal.joshi@gmail.com', 'Female', 'AB_POSITIVE');
 
 
 
@@ -47,4 +24,62 @@ VALUES
 --('SKU1018', 'Keyboard + Mouse Combo', 1599.00, 32, NOW(), NOW()),
 --('SKU1019', 'Noise Cancelling Headphones', 5499.00, 12, NOW(), NOW()),
 --('SKU1020', 'Laptop Cooling Pad', 1299.00, 38, NOW(), NOW());
+
+
+
+
+--INSERT INTO patients_table 
+--(name, birth_date, email, gender, blood_group) 
+--VALUES
+--('Amit Sharma', '1995-03-12', 'amit.sharma@gmail.com', 'Male', 'A_POSITIVE'),
+--('Priya Verma', '1998-07-21', 'priya.verma@gmail.com', 'Female', 'B_POSITIVE'),
+--('Rahul Singh', '1992-11-05', 'rahul.singh@gmail.com', 'Male', 'O_POSITIVE'),
+--('Neha Gupta', '1996-01-18', 'neha.gupta@gmail.com', 'Female', 'AB_POSITIVE'),
+--('Vikas Mehta', '1990-09-30', 'vikas.mehta@gmail.com', 'Male', 'A_NEGATIVE'),
+--('Anjali Patel', '1999-06-14', 'anjali.patel@gmail.com', 'Female', 'B_NEGATIVE'),
+--('Rohit Kumar', '1994-04-25', 'rohit.kumar@gmail.com', 'Male', 'O_NEGATIVE'),
+--('Sneha Iyer', '1997-12-02', 'sneha.iyer@gmail.com', 'Female', 'AB_NEGATIVE'),
+--('Kunal Jain', '1991-08-09', 'kunal.jain@gmail.com', 'Male', 'A_POSITIVE'),
+--('Pooja Mishra', '1995-10-17', 'pooja.mishra@gmail.com', 'Female', 'B_POSITIVE'),
+--('Arjun Reddy', '1993-02-11', 'arjun.reddy@gmail.com', 'Male', 'O_POSITIVE'),
+--('Kavya Nair', '1998-05-28', 'kavya.nair@gmail.com', 'Female', 'AB_POSITIVE'),
+--('Suresh Rao', '1989-07-07', 'suresh.rao@gmail.com', 'Male', 'A_NEGATIVE'),
+--('Ritu Saxena', '1996-03-03', 'ritu.saxena@gmail.com', 'Female', 'B_NEGATIVE'),
+--('Manish Pandey', '1992-01-22', 'manish.pandey@gmail.com', 'Male', 'O_NEGATIVE'),
+--('Divya Choudhary', '1999-09-15', 'divya.choudhary@gmail.com', 'Female', 'AB_NEGATIVE'),
+--('Nikhil Bansal', '1994-06-01', 'nikhil.bansal@gmail.com', 'Male', 'A_POSITIVE'),
+--('Swati Kulkarni', '1997-11-19', 'swati.kulkarni@gmail.com', 'Female', 'B_POSITIVE'),
+--('Aakash Yadav', '1991-12-27', 'aakash.yadav@gmail.com', 'Male', 'O_POSITIVE'),
+--('Meenal Joshi', '1998-02-08', 'meenal.joshi@gmail.com', 'Female', 'AB_POSITIVE');
+
+
+INSERT INTO insurance (id, policy_number, provider, valid_until, created_at)
+VALUES
+(1, 'POL-IND-1001', 'HDFC ERGO', '2026-12-31', NOW(6)),
+(2, 'POL-IND-1002', 'ICICI Lombard', '2025-09-15', NOW(6)),
+(3, 'POL-IND-1003', 'Star Health', '2027-03-20', NOW(6)),
+(4, 'POL-IND-1004', 'Bajaj Allianz', '2026-06-10', NOW(6)),
+(5, 'POL-IND-1005', 'Tata AIG', '2025-11-30', NOW(6));
+
+--INSERT INTO patients_table
+--(name, email, gender, blood_group, birth_date, created_at)
+--VALUES
+--('Amit Sharma', 'amit.sharma@gmail.com', 'MALE', 'A_POSITIVE', '1995-04-12', NOW(6)),
+--('Priya Verma', 'priya.verma@gmail.com', 'FEMALE', 'B_POSITIVE', '1998-08-25', NOW(6)),
+--('Rahul Singh', 'rahul.singh@gmail.com', 'MALE', 'O_POSITIVE', '1992-01-10', NOW(6)),
+--('Neha Gupta', 'neha.gupta@gmail.com', 'FEMALE', 'AB_NEGATIVE', '1996-11-03', NOW(6)),
+--('Ankit Mishra', 'ankit.mishra@gmail.com', 'MALE', 'O_NEGATIVE', '1990-06-18', NOW(6));
+
+
+
+
+INSERT INTO patients
+(name, email, gender, blood_group, birth_date, created_at)
+VALUES
+('Amit Sharma', 'amit.sharma@gmail.com', 'MALE', 'A_POSITIVE', '1995-04-12', NOW(6)),
+('Priya Verma', 'priya.verma@gmail.com', 'FEMALE', 'B_POSITIVE', '1998-08-25', NOW(6)),
+('Rahul Singh', 'rahul.singh@gmail.com', 'MALE', 'O_POSITIVE', '1992-01-10', NOW(6)),
+('Neha Gupta', 'neha.gupta@gmail.com', 'FEMALE', 'AB_NEGATIVE', '1996-11-03', NOW(6)),
+('Ankit Mishra', 'ankit.mishra@gmail.com', 'MALE', 'O_NEGATIVE', '1990-06-18', NOW(6));
+
 
