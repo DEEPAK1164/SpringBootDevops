@@ -83,3 +83,9 @@ VALUES
 ('Ankit Mishra', 'ankit.mishra@gmail.com', 'MALE', 'O_NEGATIVE', '1990-06-18', NOW(6));
 
 
+INSERT INTO doctor (email, name, specialization) VALUES
+('dr.rahul@hospital.com', 'Dr. Rahul Sharma', 'Cardiology'),
+('dr.priya@hospital.com', 'Dr. Priya Verma', 'Dermatology'),
+('dr.aman@hospital.com', 'Dr. Aman Gupta', 'Orthopedics'),
+('dr.neha@hospital.com', 'Dr. Neha Singh', 'Pediatrics'),
+('dr.rohit@hospital.com', 'Dr. Rohit Mehta', 'Neurology')
