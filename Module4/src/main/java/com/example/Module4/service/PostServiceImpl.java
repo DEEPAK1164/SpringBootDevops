@@ -55,6 +55,19 @@ public class PostServiceImpl implements PostService {
 
 
 
+	@Override
+	public PostDTO updatePost(PostDTO inputPost, long postId) {
+		// TODO Auto-generated method stub
+		PostEntity olderPost=postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post not found with id "+postId));
+		inputPost.setId(postId);
+		mapper.map(inputPost, olderPost);
+		PostEntity savedPostEntity=postRepository.save(olderPost);
+		return mapper.map(savedPostEntity, PostDTO.class);
+		
+	}
+
+
+
 	
 	
 }

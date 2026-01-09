@@ -61,10 +61,15 @@
     <version>3.2.6</version>
 </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-envers -->
+
+
 <dependency>
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-devtools</artifactId>
 </dependency>
+
+
 		
 	</dependencies>
 
