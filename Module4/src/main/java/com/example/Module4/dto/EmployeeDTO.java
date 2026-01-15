@@ -1,39 +1,28 @@
-package com.example.Module2.dto;
+package com.example.Module4.dto;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 
 public class EmployeeDTO {
 
+	private Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // ✅ default strategy
-    private Long id;
-
-    @NotBlank(message = "Name must not be blank")
     private String name;
 
-    @NotBlank(message = "Email must not be blank")
-    @Email(message = "Email should be valid")
-    private String email;
+    @Override
+	public String toString() {
+		return "EmployeeDTO [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + ", dateOfJoining="
+				+ dateOfJoining + ", isActive=" + isActive + "]";
+	}
 
-    @NotNull(message = "Age is required")
-    @Min(value = 18, message = "Age must be at least 18")
+	private String email;
+
     private Integer age;
 
-    @NotNull(message = "Date of joining is required")
-    @PastOrPresent(message = "Date of joining cannot be in the future")
+    
     private LocalDate dateOfJoining;
 
-    @NotNull(message = "Active status must be specified")
+ 
     private Boolean isActive;
     // No-args constructor
     public EmployeeDTO() {
@@ -98,12 +87,4 @@ public class EmployeeDTO {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
-
-	@Override
-	public String toString() {
-		return "EmployeeDTO [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + ", dateOfJoining="
-				+ dateOfJoining + ", isActive=" + isActive + "]";
-	}
-    
-    
 }

@@ -1,12 +1,14 @@
 package com.example.Module2.controller;
+
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.Module2.advices.ApiResponse;
 import com.example.Module2.dto.EmployeeDTO;
 import com.example.Module2.exceptions.ResourceNotFoundException;
 import com.example.Module2.service.EmployeeService;
@@ -14,7 +16,7 @@ import com.example.Module2.service.EmployeeService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")   // ✅ BASE PATH MATCHES RESTCLIENT
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -26,45 +28,49 @@ public class EmployeeController {
 
     // ================== GET ==================
 
-    // GET /employee/1
-    @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long employeeId) {
-    	Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeById(employeeId);
-
-    	return employeeDTO
-    	        .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-    	        .orElseThrow(() -> new ResourceNotFoundException("Employee not found!"));
-
-    }
-
-
-    @GetMapping("/employees")
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+    // GET /employees
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<EmployeeDTO>>> getAllEmployees() {
 
         List<EmployeeDTO> employees = employeeService.getAllEmployees();
 
-        if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 NO CONTENT
-        }
-
-        return ResponseEntity.ok(employees); // 200 OK
+        return ResponseEntity.ok(
+            ApiResponse.success(employees)
+        );
     }
 
 
+    // GET /employees/{id}
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long employeeId) {
+
+        Optional<EmployeeDTO> employeeDTO =
+                employeeService.getEmployeeById(employeeId);
+
+        return employeeDTO
+                .map(ResponseEntity::ok)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee not found!"));
+    }
+
     // ================== POST ==================
 
+    // POST /employees
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody @Valid EmployeeDTO employee) {
+    public ResponseEntity<EmployeeDTO> createEmployee(
+            @RequestBody @Valid EmployeeDTO employee) {
 
-        EmployeeDTO createdEmployee = employeeService.createEmployee(employee);
+        EmployeeDTO createdEmployee =
+                employeeService.createEmployee(employee);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED) // 201
                 .body(createdEmployee);
     }
 
-
     // ================== PUT ==================
+
+    // PUT /employees/{id}
     @PutMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> updateEmployeeById(
             @PathVariable Long employeeId,
@@ -73,13 +79,12 @@ public class EmployeeController {
         EmployeeDTO employeeDTO =
                 employeeService.updateEmployeeById(employeeId, updatedEmployee);
 
-        return ResponseEntity.ok(employeeDTO); // 200 OK
+        return ResponseEntity.ok(employeeDTO); // 200
     }
 
-
-    
-
     // ================== PATCH ==================
+
+    // PATCH /employees/{id}
     @PatchMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> updatePartialEmployeeById(
             @PathVariable Long employeeId,
@@ -97,15 +102,14 @@ public class EmployeeController {
 
     // ================== DELETE ==================
 
-    // DELETE /employee/1
+    // DELETE /employees/{id}
     @DeleteMapping("/{employeeId}")
-    public ResponseEntity<String> deleteEmployeeById(@PathVariable Long employeeId) {
+    public ResponseEntity<String> deleteEmployeeById(
+            @PathVariable Long employeeId) {
 
         employeeService.deleteEmployeeById(employeeId);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)   // 200 OK
-                .body("Employee with ID " + employeeId + " deleted successfully");
+        return ResponseEntity.ok(
+                "Employee with ID " + employeeId + " deleted successfully");
     }
-
 }
